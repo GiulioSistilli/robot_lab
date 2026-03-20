@@ -1,0 +1,48 @@
+# .github/workflows/ci.yml
+# Runs on every push and pull request.
+# Verifies the project installs cleanly and models load correctly.
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify XML models load
+        run: |
+          python -c "
+          import mujoco
+          m1 = mujoco.MjModel.from_xml_path('robots/quadruped/model.xml')
+          m2 = mujoco.MjModel.from_xml_path('robots/quadruped/terrain.xml')
+          print(f'model.xml   : {m1.nq} DOF, {m1.nu} actuators, {m1.nsensor} sensors')
+          print(f'terrain.xml : {m2.nq} DOF, {m2.nu} actuators, {m2.nsensor} sensors')
+          print('All models OK')
+          "
+
+      - name: Verify envs import
+        run: |
+          python -c "
+          from envs.quadruped_flat_env import QuadrupedFlatEnv
+          from envs.quadruped_terrain_env import QuadrupedTerrainEnv
+          env = QuadrupedFlatEnv()
+          obs, _ = env.reset()
+          print(f'Flat env obs shape: {obs.shape}')
+          env2 = QuadrupedTerrainEnv()
+          obs2, _ = env2.reset()
+          print(f'Terrain env obs shape: {obs2.shape}')
+          print('All envs OK')
+          "
