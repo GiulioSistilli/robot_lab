@@ -1,0 +1,20 @@
+robot : quadruped
+task  : terrain
+
+env_class : QuadrupedTerrainEnv
+env_kwargs:
+  xml_path: robots/quadruped/terrain.xml
+
+n_envs           : 4
+algorithm        : PPO
+checkpoint_freq  : 50_000
+total_timesteps  : 6_000_000
+
+algo_kwargs:
+  n_steps      : 2048
+  batch_size   : 256
+  learning_rate: 0.0003
+  gamma        : 0.995
+  gae_lambda   : 0.95
+  clip_range   : 0.2
+  ent_coef     : 0.02

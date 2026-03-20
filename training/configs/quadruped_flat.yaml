@@ -1,0 +1,20 @@
+robot : quadruped
+task  : flat
+
+env_class : QuadrupedFlatEnv
+env_kwargs:
+  xml_path: robots/quadruped/model.xml
+
+n_envs           : 8
+algorithm        : PPO
+checkpoint_freq  : 50_000
+total_timesteps  : 4_000_000
+
+algo_kwargs:
+  n_steps      : 2048
+  batch_size   : 256
+  learning_rate: 0.0003
+  gamma        : 0.99
+  gae_lambda   : 0.95
+  clip_range   : 0.2
+  ent_coef     : 0.01

@@ -1,0 +1,27 @@
+# Training outputs — too large for git
+experiments/
+checkpoints/
+tb_logs/
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+mujoco_env/
+mujoco_env2/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep folder structure in git even when empty
+!experiments/.gitkeep
